@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ÜçBeşSekiz — üç kişilik kart oyunu</title>
+<meta name="description" content="Geleneksel üç kişilik Türk kart oyunu ÜçBeşSekiz, iPhone için. Botlara karşı, çevrimdışı.">
+<link rel="icon" href="ikon.png">
+
+<style>
+  /* Renkler gizlilik.html ve kurallar.html ile aynı; üç sayfa tek site. */
+  :root {
+    --paper:      #FAF7F0;
+    --paper-warm: #F2EDE2;
+    --ink:        #1E2320;
+    --ink-soft:   #5A6159;
+    --felt:       #175438;
+    --brass:      #8A6218;
+    --brass-line: #D9C9A3;
+
+    --display: ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+    --body: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    --ui: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:      #12201A;
+      --paper-warm: #17291F;
+      --ink:        #EDE8DC;
+      --ink-soft:   #9DAA9E;
+      --felt:       #7FBF97;
+      --brass:      #E0B45C;
+      --brass-line: #3C4A3C;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 4.5rem 1.25rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .icon {
+    width: 132px;
+    height: 132px;
+    border-radius: 30px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.25rem, 9vw, 3rem);
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    margin: 0;
+    color: var(--ink-soft);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-family: var(--ui);
+  }
+
+  nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1.25rem;
+    border: 1px solid var(--brass-line);
+    border-radius: 999px;
+    background: var(--paper-warm);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.975rem;
+  }
+
+  nav a:hover { border-color: var(--brass); }
+  nav a:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+  footer {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--brass-line);
+    width: 100%;
+    font-family: var(--ui);
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  footer a { color: var(--brass); }
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <img class="icon" src="ikon.png" width="132" height="132"
+       alt="ÜçBeşSekiz ikonu: maça üç, kupa beş, sinek sekiz">
+
+  <h1>ÜçBeşSekiz</h1>
+
+  <p class="lede">Geleneksel üç kişilik Türk kart oyunu, iPhone için.
+  Botlara karşı, çevrimdışı.</p>
+
+  <nav aria-label="Sayfalar">
+    <a href="kurallar.html">Kurallar</a>
+    <a href="gizlilik.html">Gizlilik politikası</a>
+  </nav>
+
+  <footer>
+    Berk Karapençe ·
+    <a href="mailto:bkarapence@gmail.com">bkarapence@gmail.com</a>
+  </footer>
+</main>
+
+</body>
+</html>

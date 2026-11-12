@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ÜçBeşSekiz — Gizlilik Politikası</title>
+
+<style>
+  /* Renkler kurallar.html ile aynı; iki sayfa tek bir siteye ait görünsün.
+     Bkz. oradaki not: #D9A847 krem zeminde okunmuyor, #8A6218 kullanılıyor. */
+  :root {
+    --paper:      #FAF7F0;
+    --paper-warm: #F2EDE2;
+    --ink:        #1E2320;
+    --ink-soft:   #5A6159;
+    --felt:       #175438;
+    --brass:      #8A6218;
+    --brass-line: #D9C9A3;
+
+    --display: ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+    --body: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    --ui: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #12201A;
+      --paper-warm: #17291F;
+      --ink:        #EDE8DC;
+      --ink-soft:   #9DAA9E;
+      --felt:       #7FBF97;
+      --brass:      #E0B45C;
+      --brass-line: #3C4A3C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #12201A;
+    --paper-warm: #17291F;
+    --ink:        #EDE8DC;
+    --ink-soft:   #9DAA9E;
+    --felt:       #7FBF97;
+    --brass:      #E0B45C;
+    --brass-line: #3C4A3C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.2rem, 5vw, 2rem) 5rem;
+  }
+
+  header { margin-bottom: 2.5rem; }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .eyebrow {
+    font-family: var(--ui);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0;
+  }
+
+  .theme {
+    flex: none;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--brass);
+    background: transparent;
+    border: 1px solid var(--brass-line);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .theme:hover { background: var(--paper-warm); }
+
+  .theme:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+  }
+
+  .theme svg { width: 1.15rem; height: 1.15rem; display: block; }
+
+  .theme .sun { display: none; }
+  :root[data-theme="dark"] .theme .sun { display: block; }
+  :root[data-theme="dark"] .theme .moon { display: none; }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 6.5vw, 2.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .updated {
+    font-family: var(--ui);
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* Özet kutusu: politikanın tamamını okumayan biri bile buradan çıkarsın. */
+  .summary {
+    margin: 2.5rem 0 0;
+    padding: 1.5rem 1.6rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--brass-line);
+    border-radius: 14px;
+  }
+
+  .summary h2 {
+    font-family: var(--ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 0.9rem;
+  }
+
+  .summary p {
+    margin: 0;
+    font-size: 1.1rem;
+    text-wrap: pretty;
+  }
+
+  h2.section {
+    font-family: var(--display);
+    font-size: 1.42rem;
+    letter-spacing: -0.01em;
+    margin: 3rem 0 0.9rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--brass-line);
+  }
+
+  p { margin: 0 0 1.1rem; text-wrap: pretty; }
+
+  ul { margin: 0 0 1.1rem; padding-left: 1.3rem; }
+
+  li { margin-bottom: 0.5rem; }
+
+  b { color: var(--ink); }
+
+  a { color: var(--felt); text-underline-offset: 2px; }
+
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--brass-line);
+    font-family: var(--ui);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<!-- lang="tr" görsel bir tercih değil: `text-transform: uppercase` Türkçe
+     kurallarına göre çalışsın diye gerekiyor (i → İ, ı → I). -->
+<div class="wrap" lang="tr">
+
+<header>
+  <div class="top">
+    <p class="eyebrow">ÜçBeşSekiz</p>
+    <button class="theme" type="button" aria-label="Karanlık temaya geç">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+      </svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2
+                 M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+      </svg>
+    </button>
+  </div>
+
+  <h1>Gizlilik politikası</h1>
+  <p class="updated">Son güncelleme: 8 Ekim 2026</p>
+</header>
+
+<div class="summary">
+  <h2>Kısaca</h2>
+  <p>Oyunun kendisi sizden hiçbir veri toplamıyor; maçlarınız ve
+  istatistikleriniz yalnızca telefonunuzda duruyor. Oyun ücretsiz ve
+  <b>reklamlı</b>: tur aralarında Google'ın reklam hizmeti (AdMob) reklam
+  gösteriyor ve bunun için telefonunuzdan bazı teknik bilgiler alıyor.
+  <b>Sizi uygulamalar arasında izlemiyoruz</b> ve kişiselleştirilmiş reklam
+  istemiyoruz. "Reklamları kaldır" satın alındığında reklam isteği de gitmiyor.</p>
+</div>
+
+<h2 class="section">Cihazınızda kalanlar</h2>
+
+<p>Oyun birkaç şeyi telefonunuza kaydediyor. Hepsi <b>yalnızca o telefonda</b>
+duruyor; hiçbiri bir sunucuya gönderilmiyor ve biz erişemiyoruz:</p>
+
+<ul>
+  <li>yarım kalan maç, kaldığınız yerden devam edebilmeniz için</li>
+  <li>biten son maçın kaydı, analiz ekranını sonradan açabilmeniz için</li>
+  <li>oynanmış maçların istatistikleri</li>
+  <li>ses ve otomatik devam tercihleriniz</li>
+</ul>
+
+<p>Uygulamayı silerseniz bunların hepsi silinir. Ayrıca bir işlem yapmanız
+gerekmiyor.</p>
+
+<h2 class="section">Reklamlar</h2>
+
+<p>Oyunda tek bir üçüncü taraf yazılım kitaplığı var: Google'ın reklam
+kitaplığı (Google Mobile Ads). Reklam yalnızca <b>tur bitiminde</b> çıkıyor,
+en fazla birkaç dakikada bir; tur oynanırken hiçbir zaman araya girmiyor.</p>
+
+<p>Reklamı gösterebilmek için Google telefonunuzdan şunları alıyor:</p>
+
+<ul>
+  <li>IP adresi — bundan kabaca hangi şehirde/ülkede olduğunuz çıkarılıyor</li>
+  <li>uygulamaya ve geliştiriciye özgü bir cihaz kimliği</li>
+  <li>hangi reklamın gösterildiği ve ona dokunup dokunmadığınız</li>
+  <li>reklamın yüklenme süresi gibi performans bilgileri ve çökme kayıtları</li>
+</ul>
+
+<p>Bu bilgiler reklamı göstermek, sahte tıklamaları ayıklamak ve reklam
+hizmetini ölçmek için kullanılıyor. Google'ın bu verileri nasıl işlediği
+<a href="https://policies.google.com/privacy">Google Gizlilik Politikası</a>'na
+tabi; ayrıntı için
+<a href="https://policies.google.com/technologies/partner-sites">Google
+iş ortaklarının sitelerinde ve uygulamalarında veri kullanımı</a>
+sayfasına bakabilirsiniz.</p>
+
+<p><b>İzleme izni istemiyoruz.</b> Telefonunuzun reklam kimliği (IDFA)
+uygulamaya kapalı kalıyor; Google'dan yalnızca <b>kişiselleştirilmemiş</b>
+reklam istiyoruz ve yetişkin içerikli reklamları kapattık. Biz bu verilerin
+hiçbirini görmüyoruz; AdMob panelinde yalnızca toplam gösterim ve gelir
+sayıları var.</p>
+
+<p>Reklam istekleri dışında oyun internete bağlanmıyor. İnternet yoksa
+reklam da gelmez, oyun aynı şekilde oynanır.</p>
+
+<h2 class="section">Reklamları kaldır</h2>
+
+<p>Menüdeki "Reklamları kaldır" tek seferlik bir satın alma. Ödeme tamamen
+Apple üzerinden yapılıyor; kart bilgilerinizi biz hiç görmüyoruz. Satın
+aldıktan sonra uygulama Google'a reklam isteği <b>göndermiyor</b>.
+Telefon değiştirirseniz menüdeki "Satın alımları geri yükle" ile aynı Apple
+hesabında yeniden ödemeden geri alırsınız.</p>
+
+<h2 class="section">Hata bildirimi</h2>
+
+<p>Oyun ekranındaki ⋯ menüsünde <b>“Bu eli bildir”</b> diye bir seçenek var.
+Buna bastığınızda telefonunuzun kendi posta ekranı açılıyor ve alıcı olarak
+geliştiricinin adresi dolu geliyor. <b>Gönderme kararı tamamen sizde</b> —
+vazgeçerseniz hiçbir şey gitmez.</p>
+
+<p>Gönderirseniz iletinin ekinde şunlar oluyor:</p>
+
+<ul>
+  <li>kartların nasıl dağıldığını belirleyen sayı ve maçın ayarları</li>
+  <li>o maçta oynanmış hamlelerin listesi</li>
+  <li>yazdığınız not ve uygulamanın sürüm numarası</li>
+</ul>
+
+<p>Bu dosyada adınız, konumunuz, kişileriniz ya da cihazınızı tanımlayan bir
+bilgi yok. Yalnızca oyunun kendisi var. Dosyayı e-postayla gönderdiğiniz için
+doğal olarak <b>e-posta adresinizi</b> görüyoruz; bunu yalnızca bildirdiğiniz
+konuya dönüş yapmak için kullanıyoruz, listeye eklemiyor ve kimseyle
+paylaşmıyoruz.</p>
+
+<p>Bildirimler sorun giderildikten sonra siliniyor. Daha erken silinmesini
+isterseniz yazmanız yeterli.</p>
+
+<h2 class="section">TestFlight ve App Store</h2>
+
+<p>Uygulamayı TestFlight üzerinden deniyorsanız Apple, çökme kayıtlarını ve
+temel kullanım verilerini kendi topluyor ve bize toplu istatistik olarak
+gösteriyor. Bu veriler Apple’ın kendi gizlilik politikasına tabi; kimin ne
+oynadığını görebildiğimiz bir yer değil.</p>
+
+<h2 class="section">Çocuklar</h2>
+
+<p>Oyunun içeriği her yaşa uygun, ama oyun çocuklara yönelik olarak
+tasarlanmadı ve App Store'un Çocuklar bölümünde yer almıyor. Reklamlar
+aile dostu içerikle sınırlı.</p>
+
+<h2 class="section">Değişiklikler</h2>
+
+<p>Bu metin değişirse yukarıdaki tarih güncellenir. Veri konusunda
+duruşumuz değişirse bunu uygulama içinde açıkça duyururuz, sessizce bu sayfayı
+değiştirmeyiz.</p>
+
+<h2 class="section">İletişim</h2>
+
+<p>Soru, itiraz, silme talebi:
+<a href="mailto:bkarapence@gmail.com">bkarapence@gmail.com</a></p>
+
+<footer>
+  ÜçBeşSekiz · Berk Karapençe
+</footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+
+    // Kaydedilmiş tercih varsa sayfa çizilmeden uygulanıyor; yoksa sistemin
+    // tercihi geçerli kalıyor ve damga hiç basılmıyor.
+    try {
+      var saved = localStorage.getItem("ucbessekiz-tema");
+      if (saved) root.dataset.theme = saved;
+    } catch (e) {
+      // Gizli sekmede localStorage erişimi hata verebilir; tercih
+      // yoksayılır, sayfa sistem temasıyla açılır.
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var button = document.querySelector(".theme");
+    var dark = matchMedia("(prefers-color-scheme: dark)");
+
+    // Yürürlükteki tema: elle seçim varsa o, yoksa sistemin tercihi.
+    function current() {
+      if (root.dataset.theme) return root.dataset.theme;
+      return dark.matches ? "dark" : "light";
+    }
+
+    function apply(theme) {
+      root.dataset.theme = theme;
+      button.setAttribute(
+        "aria-label",
+        theme === "dark" ? "Aydınlık temaya geç" : "Karanlık temaya geç"
+      );
+    }
+
+    apply(current());
+
+    button.addEventListener("click", function () {
+      var next = current() === "dark" ? "light" : "dark";
+      apply(next);
+      try {
+        localStorage.setItem("ucbessekiz-tema", next);
+      } catch (e) {
+        // Kaydedilemezse tercih yalnızca bu sayfa için geçerli olur.
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

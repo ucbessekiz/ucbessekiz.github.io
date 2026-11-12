@@ -1,0 +1,833 @@
+<title>ÜçBeşSekiz Nasıl Oynanır</title>
+
+<style>
+  /* Renkler uygulamanın Theme.swift'inden geliyor ama iki yerde ayarlandı:
+     #D9A847 pirinç krem zeminde okunmuyor, o yüzden burada koyulaştırıldı
+     (#8A6218). Vurguyu değiştirmek yerine doygunluğunu düşürmek, kimliği
+     korurken kontrastı kurtarıyor. */
+  :root {
+    --paper:      #FAF7F0;
+    --paper-warm: #F2EDE2;
+    --ink:        #1E2320;
+    --ink-soft:   #5A6159;
+    --felt:       #175438;
+    --brass:      #8A6218;
+    --brass-line: #D9C9A3;
+    --red:        #A8201D;
+
+    --display: ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+    --body: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    --ui: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #12201A;
+      --paper-warm: #17291F;
+      --ink:        #EDE8DC;
+      --ink-soft:   #9DAA9E;
+      --felt:       #7FBF97;
+      --brass:      #E0B45C;
+      --brass-line: #3C4A3C;
+      --red:        #E8807C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #12201A;
+    --paper-warm: #17291F;
+    --ink:        #EDE8DC;
+    --ink-soft:   #9DAA9E;
+    --felt:       #7FBF97;
+    --brass:      #E0B45C;
+    --brass-line: #3C4A3C;
+    --red:        #E8807C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.2rem, 5vw, 2rem) 5rem;
+  }
+
+  /* ---- Başlık ---------------------------------------------------------- */
+
+  header { margin-bottom: 3rem; }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .eyebrow {
+    font-family: var(--ui);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0;
+  }
+
+  /* ---- Tema düğmesi ---------------------------------------------------- */
+
+  .theme {
+    flex: none;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--brass);
+    background: transparent;
+    border: 1px solid var(--brass-line);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .theme:hover { background: var(--paper-warm); }
+
+  .theme:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+  }
+
+  .theme svg { width: 1.15rem; height: 1.15rem; display: block; }
+
+  /* Gösterilen ikon, **geçilecek** temayı anlatıyor: aydınlıktayken ay,
+     karanlıktayken güneş. Düğmenin ne yapacağı ikondan okunuyor. */
+  .theme .sun { display: none; }
+  :root[data-theme="dark"] .theme .sun { display: block; }
+  :root[data-theme="dark"] .theme .moon { display: none; }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 6.5vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 1.19rem;
+    color: var(--ink-soft);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ---- Bir bakışta ----------------------------------------------------- */
+
+  .glance {
+    margin: 2.5rem 0 0;
+    padding: 1.5rem 1.6rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--brass-line);
+    border-radius: 14px;
+  }
+
+  .glance h2 {
+    font-family: var(--ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 1.1rem;
+  }
+
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    gap: 1rem;
+    margin: 0 0 1.1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles li { text-align: center; }
+
+  .roles b {
+    display: block;
+    font-family: var(--display);
+    font-size: 2.1rem;
+    line-height: 1;
+    color: var(--felt);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .roles span {
+    font-family: var(--ui);
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+  }
+
+  .sum {
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--brass-line);
+    font-family: var(--ui);
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .sum b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  /* ---- İçindekiler ----------------------------------------------------- */
+
+  nav {
+    margin: 2.5rem 0 0;
+    font-family: var(--ui);
+    font-size: 0.94rem;
+  }
+
+  nav ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  nav li { margin-bottom: 0.35rem; break-inside: avoid; }
+
+  a { color: var(--brass); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--felt); }
+  a:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 2px; }
+
+  /* ---- Bölümler -------------------------------------------------------- */
+
+  section { margin-top: 3.4rem; scroll-margin-top: 1.5rem; }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 1.53rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--brass-line);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--display);
+    font-size: 1.11rem;
+    margin: 2rem 0 0.6rem;
+  }
+
+  p { margin: 0 0 1.05rem; text-wrap: pretty; }
+
+  ul, ol { margin: 0 0 1.05rem; padding-left: 1.4rem; }
+  li { margin-bottom: 0.45rem; }
+
+  strong { font-weight: 700; }
+
+  /* Kural içindeki kritik cümleler — göz taramada bunları yakalasın. */
+  .key {
+    margin: 1.4rem 0;
+    padding: 0.9rem 1.2rem;
+    background: var(--paper-warm);
+    border-left: 3px solid var(--felt);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .key p:last-child { margin-bottom: 0; }
+
+  /* ---- Satır içi kartlar ----------------------------------------------- */
+
+  .c {
+    display: inline-block;
+    font-family: var(--ui);
+    font-size: 0.86em;
+    font-weight: 600;
+    padding: 0.08em 0.36em;
+    border: 1px solid var(--brass-line);
+    border-radius: 4px;
+    background: var(--paper);
+    white-space: nowrap;
+  }
+
+  .c.r { color: var(--red); }
+  .c.b { color: var(--ink); }
+
+  /* ---- Tablo ----------------------------------------------------------- */
+
+  .scroll { overflow-x: auto; margin: 0 0 1.05rem; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--ui);
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 0.6rem 0.7rem;
+    border-bottom: 1px solid var(--brass-line);
+  }
+
+  th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  /* ---- Akış listesi ---------------------------------------------------- */
+
+  .flow {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.05rem;
+  }
+
+  .flow li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.4rem;
+    margin-bottom: 0.7rem;
+  }
+
+  /* Numaralar burada gerçek bilgi taşıyor: turun adımları kesin bir sırada
+     işliyor ve o sıra kuralın parçası. */
+  .flow li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: grid;
+    place-items: center;
+    font-family: var(--ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--paper);
+    background: var(--felt);
+    border-radius: 50%;
+  }
+
+  /* ---- Alt ------------------------------------------------------------- */
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--brass-line);
+    font-family: var(--ui);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  footer p { margin: 0 0 0.7rem; }
+</style>
+
+<script>
+  // Kaydedilmiş tema tercihi, sayfa boyanmadan **önce** uygulanıyor.
+  // Sonraya bırakılsaydı okuyucu bir an yanlış temayı görüp sonra
+  // sayfanın renk değiştirmesine tanık olurdu.
+  try {
+    var saved = localStorage.getItem("ucbessekiz-tema");
+    if (saved === "dark" || saved === "light") {
+      document.documentElement.dataset.theme = saved;
+    }
+  } catch (e) {
+    // Gizli sekmede localStorage erişimi hata verebilir; tercih
+    // kaydedilemez ama sayfa sistem temasıyla normal çalışır.
+  }
+</script>
+
+<!-- lang="tr" görsel bir tercih değil, doğruluk meselesi: `text-transform:
+     uppercase` dili bilmezse "bir" → "BIR" yazıyor, oysa Türkçe'de "BİR"
+     olmalı. Aynısı "kişilik" → "KIŞILIK" için de geçerli. Tarayıcı doğru
+     glifi ancak dil beyan edilince çiziyor. -->
+<div class="wrap" lang="tr">
+
+<header>
+  <div class="top">
+    <!-- Büyük harfler doğrudan yazılı. `lang="tr"` + `text-transform` doğru
+         harfi veriyor ama yedek fontta `İ` yoksa tarayıcı onu birleşen
+         noktayla kuruyor ve `letter-spacing` noktayı kaydırıyor. Sabit
+         metinlerde dönüştürmeye güvenmemek daha sağlam. -->
+    <p class="eyebrow">ÜÇ KİŞİLİK KART OYUNU</p>
+
+    <button class="theme" type="button" aria-label="Karanlık temaya geç">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>
+      </svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/>
+      </svg>
+    </button>
+  </div>
+
+  <h1>ÜçBeşSekiz nasıl oynanır?</h1>
+  <p class="lede">
+    Üç kişiyle, 52 kartla oynanan geleneksel bir el alma oyunu. Her oyuncunun
+    o turda alması gereken bir el sayısı var: üç, beş ya da sekiz. Kuralların
+    tamamı aşağıda.
+  </p>
+
+  <div class="glance">
+    <h2>BİR BAKIŞTA</h2>
+    <ul class="roles">
+      <li><b>3</b><span>üççü</span></li>
+      <li><b>5</b><span>beşçi</span></li>
+      <li><b>8</b><span>sekizci</span></li>
+    </ul>
+    <p class="sum">
+      Hedeflerin toplamı <b>16</b> — bir turdaki el sayısının tam olarak
+      kendisi. Yani birinin hedefini aşması, bir başkasının altında kalması
+      demek.
+    </p>
+  </div>
+
+  <nav aria-label="İçindekiler">
+    <ol>
+      <li><a href="#amac">Amaç ve puanlama</a></li>
+      <li><a href="#dagitim">Dağıtım</a></li>
+      <li><a href="#akis">Bir turun akışı</a></li>
+      <li><a href="#koz">Koz ve gömme</a></li>
+      <li><a href="#oynanis">Oynanış</a></li>
+      <li><a href="#kim-alir">Eli kim alır</a></li>
+      <li><a href="#transfer">Kart transferi</a></li>
+      <li><a href="#rotasyon">Rollerin dönmesi</a></li>
+      <li><a href="#bitis">Maç nasıl biter</a></li>
+      <li><a href="#af">Af'lı oturum</a></li>
+    </ol>
+  </nav>
+</header>
+
+<section id="amac">
+  <h2>Amaç ve puanlama</h2>
+
+  <p>
+    Bir tur 16 elden oluşur. Her oyuncu o tur için bir rol taşır ve rolün bir
+    hedefi vardır: <strong>üççü 3</strong>, <strong>beşçi 5</strong>,
+    <strong>sekizci 8</strong> el almalıdır.
+  </p>
+
+  <div class="key">
+    <p>
+      <strong>Puanın, aldığın el sayısıdır.</strong> Hedefin değil, farkın
+      değil — ham el sayısı. Hedefini aşmanın cezası yoktur, dolayısıyla her
+      zaman olabildiğince çok el almaya çalışırsın.
+    </p>
+  </div>
+
+  <p>
+    Peki hedef ne işe yarıyor? <strong>Fark</strong> yalnızca bir sonraki
+    turdaki kart transferini belirler. İki ayrı büyüklük:
+  </p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>Rol</th><th>Hedef</th><th>Aldığı</th><th>Puan</th><th>Fark</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sekizci</td><td>8</td><td>9</td><td><strong>+9</strong></td><td>+1</td></tr>
+        <tr><td>Beşçi</td><td>5</td><td>4</td><td><strong>+4</strong></td><td>−1</td></tr>
+        <tr><td>Üççü</td><td>3</td><td>3</td><td><strong>+3</strong></td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Her tur üç oyuncuya toplam 16 puan dağıtılır ve farkların toplamı daima
+    sıfırdır.
+  </p>
+</section>
+
+<section id="dagitim">
+  <h2>Dağıtım</h2>
+
+  <p>
+    52 kart kullanılır, joker yoktur. Sıralama <span class="c b">2</span>
+    en küçük, <span class="c b">A</span> en büyük olacak şekilde olağan
+    sıradır. Renkler arasında doğal bir üstünlük yoktur; yalnızca koz üstündür.
+  </p>
+
+  <p>
+    Kartlar teker teker dağıtılır. Her oyuncuya <strong>16 kart</strong>
+    gelir, kalan <strong>4 kart</strong> kapalı olarak ortada durur. Buna
+    <em>yer</em> denir.
+  </p>
+
+  <h3>İlk sekizci kim olur?</h3>
+
+  <p>
+    Maçın <em>yalnızca ilk turunda</em>: kartlar dağıtılır ve elinde
+    <span class="c r">♦2</span> bulunan oyuncu ilk sekizci olur. Saat yönünün
+    tersinde sırayla beşçi ve üççü belirlenir.
+  </p>
+
+  <p>
+    <span class="c r">♦2</span> yere düşerse kimsenin elinde değildir — bu,
+    dağıtımların yaklaşık %8'inde oluyor. O zaman sıradaki karoya bakılır:
+    <span class="c r">♦3</span> kimdeyse o sekizci olur, o da yerdeyse
+    <span class="c r">♦4</span>, sonra <span class="c r">♦5</span>…
+  </p>
+
+  <div class="key">
+    <p>
+      Bu arayış her zaman biter ve en geç <span class="c r">♦6</span>'da
+      sonuçlanır: yer yalnızca 4 kart olduğu için ♦2–♦6 beşlisinden en az biri
+      mutlaka bir oyuncunun elindedir.
+    </p>
+  </div>
+</section>
+
+<section id="akis">
+  <h2>Bir turun akışı</h2>
+
+  <p>Sıra kuralın parçasıdır — özellikle 3, 4 ve 5. adımların yeri:</p>
+
+  <ol class="flow">
+    <li>Dağıtım — 16'şar kart, 4 kart yere.</li>
+    <li>Roller döner. İlk turda <span class="c r">♦2</span> kimdeyse sekizci olur.</li>
+    <li><strong>Kart transferi</strong> — kozdan <em>önce</em>. İlk turda atlanır.</li>
+    <li>Sekizci kozu ilan eder — <strong>yeri görmeden</strong>.</li>
+    <li>Sekizci elinden 4 kart gömer. <em>(Bu ana kadar koz değiştirilebilir.)</em></li>
+    <li>Sekizci yerdeki 4 kartı alır.</li>
+    <li>Varsa kart gösterme kuralı işler.</li>
+    <li>Oyun başlar; ilk eli sekizci açar, 16 el oynanır.</li>
+    <li>Tur sonu: puanlar ve farklar hesaplanır.</li>
+  </ol>
+
+  <div class="key">
+    <p>
+      <strong>Sekizci yeri görmeden hem kozu seçer hem gömer.</strong> Oyunun
+      dengesi buna dayanıyor: sekizci en güçlü rol ama körlemesine karar
+      vermek zorunda.
+    </p>
+  </div>
+</section>
+
+<section id="koz">
+  <h2>Koz ve gömme</h2>
+
+  <p>
+    Sekizci 16 kartını görür ve kozu serbestçe ilan eder. Kozsuz oyun yoktur;
+    her turda mutlaka bir koz rengi vardır.
+  </p>
+
+  <p>
+    Koz ilan edildikten sonra sekizci elinden <strong>4 kart gömer</strong>
+    (12 karta düşer), ardından yerdeki <strong>4 kartı alır</strong> (yine 16
+    kart). Koz gömmek serbesttir. Gömülen kartlar tur boyunca oyun dışıdır ve
+    kimse göremez.
+  </p>
+
+  <p>
+    Uygulamada ilan ettiğin kozu <strong>gömene kadar değiştirebilirsin</strong>:
+    üst çubuktaki koz göstergesine dokunman yeterli. Yanlış renge dokunmak
+    gerçek bir hata ve bu ikisi arasında eline yeni bir kart gelmiyor — yeri
+    gömdükten sonra çekiyorsun. Gömdüğün an koz kesinleşir, çünkü neyi gömüp
+    neyi tuttuğun zaten koza göre verilmiş bir karar.
+  </p>
+
+  <h3>Kart gösterme kuralı</h3>
+
+  <p>
+    Bu kural yalnızca sekizci transferde kart <em>vermek zorunda kaldığında</em>
+    işler, çünkü yeri çeken tek oyuncu sekizcidir.
+  </p>
+
+  <p>
+    Sekizci birine bir kart verdiyse ve yerden çektiği kartlar arasında
+    <strong>aynı renkten, verdiği karttan daha yüksek</strong> bir kart varsa,
+    o kartı <strong>sadece o oyuncuya</strong> göstermek zorundadır.
+  </p>
+
+  <p>
+    <em>Örnek:</em> Beşçi sekizciden kart istedi ve <span class="c r">♥3</span>
+    verdi — karşılığında yüksek bir kupa almak için. Sekizci elindeki en yüksek
+    kupayı, <span class="c r">♥Q</span>'yu vermek zorunda kaldı. Sonra yeri
+    çekti ve <span class="c r">♥A</span> geldi. Sekizci
+    <span class="c r">♥A</span>'yı beşçiye göstermek zorunda.
+  </p>
+
+  <div class="key">
+    <p>
+      Mantığı şu: beşçi <span class="c r">♥3</span> karşılığında "en yüksek
+      kupayı" satın aldı. Sekizci yerden daha yükseğini çektiyse, beşçinin
+      aldığı kart artık en yüksek değil — bunu bilmeye hakkı var.
+    </p>
+  </div>
+</section>
+
+<section id="oynanis">
+  <h2>Oynanış</h2>
+
+  <p>
+    Masa saat yönünün tersine döner. İlk eli sekizci açar; sonraki her eli
+    önceki eli alan oyuncu açar.
+  </p>
+
+  <h3>Koz açma kısıtı</h3>
+
+  <p>
+    <strong>Koz kırılmadan kimse koz açamaz.</strong> Koz, bir oyuncu açılan
+    renge sahip olmadığı için koz oynadığında kırılır.
+  </p>
+
+  <p>
+    Tek istisna: elinde <em>yalnızca koz</em> kalmışsa, koz kırılmamış olsa
+    bile koz açmak zorundasın.
+  </p>
+
+  <h3>Kart oynama zorunlulukları</h3>
+
+  <p>Açılan renge <strong>uymak zorunludur</strong>. Sırayla:</p>
+
+  <ul>
+    <li>
+      <strong>Elinde açılan renk varsa</strong> — o renkten istediğin kartı
+      oynarsın. Yükseltme zorunluluğu <em>yoktur</em>.
+    </li>
+    <li>
+      <strong>Açılan renk yok ama koz varsa</strong> — koz oynamak
+      <em>zorundasın</em>. Masada zaten koz varsa ve elinde ondan yükseği
+      varsa, yükseğini oynamak zorundasın. Hepsi küçükse yine koz atarsın,
+      alttan.
+    </li>
+    <li>
+      <strong>Ne açılan renk ne koz varsa</strong> — herhangi bir kart
+      oynarsın, hükümsüz gider.
+    </li>
+  </ul>
+
+  <div class="key">
+    <p>
+      Dikkat: <strong>yükseltme zorunluluğu yalnızca kozda vardır.</strong>
+      Açılan renkte istediğini oynayabilirsin, ama koz basmak mutlaktır —
+      elindeki tüm kozlar masadakinden küçük olsa bile koz atmak zorundasın.
+    </p>
+  </div>
+</section>
+
+<section id="kim-alir">
+  <h2>Eli kim alır</h2>
+
+  <ol>
+    <li>Ele koz oynandıysa <strong>en yüksek koz</strong> alır.</li>
+    <li>Koz oynanmadıysa <strong>açılan renkteki en yüksek kart</strong> alır.</li>
+    <li>Açılan renk dışı, koz olmayan kartlar hiçbir zaman almaz.</li>
+  </ol>
+</section>
+
+<section id="transfer">
+  <h2>Kart transferi</h2>
+
+  <p>
+    Oyunun karakteristik mekaniği ve asıl derinliği burada. Yeni tur
+    dağıtıldıktan sonra, koz ilan edilmeden önce yapılır. İlk turda yapılmaz.
+  </p>
+
+  <p>
+    Geçen tur hedefini <strong>aşan</strong> oyuncu, aradaki fark kadar kart
+    isteme hakkı kazanır. Hedefinin <strong>altında kalan</strong> oyuncu
+    vermek zorundadır.
+  </p>
+
+  <h3>Nasıl işler</h3>
+
+  <ol>
+    <li>Artıdaki oyuncu, hakkı kaçsa o kadar kartı <strong>aynı anda</strong>
+      verir. Seçimde sınırlama yok — çöp de verebilir, as da.</li>
+    <li>Eksikteki oyuncu, verilen her kart için <strong>aynı renkteki en
+      yüksek kartını</strong> iade etmek zorundadır.</li>
+    <li>Karşılıklar birlikte gelir.</li>
+  </ol>
+
+  <div class="key">
+    <p>
+      <strong>Takas simültanedir.</strong> Bir kart verip geleni gördükten
+      sonra ikinciye karar vermek mümkün değildir. Üç kart isteniyorsa üçü
+      birden seçilir — hangisinin kime gideceği dahil.
+    </p>
+  </div>
+
+  <p>
+    Bunun önemli bir sonucu var: karşılıklar, verdiğin kartlar karşı tarafın
+    eline <em>eklenmeden önceki</em> elden seçilir. Yani az önce verdiğin bir
+    kart sana geri dönemez.
+  </p>
+
+  <h3>Takas gerçekleşmezse</h3>
+
+  <p>
+    Eksikteki oyuncunun elinde, teklif edilen karttan <strong>daha yüksek</strong>
+    bir kart yoksa kart <strong>geri verilir</strong> ve o alma hakkı
+    <strong>yanar</strong>. Başka bir renkle tekrar denenemez.
+  </p>
+
+  <p>Bu iki durumu kapsar: o renkten hiç kartı olmaması, ya da olan kartların hepsinin düşük olması.</p>
+
+  <p>
+    <em>Örnek:</em> İki karo istendi, <span class="c r">♦3</span> ve
+    <span class="c r">♦4</span> verildi. Karşı taraftaki tüm karolar
+    <span class="c r">♦K</span> ve <span class="c r">♦2</span>.
+  </p>
+
+  <ul>
+    <li><span class="c r">♦4</span> karşılığında <span class="c r">♦K</span> gitti.</li>
+    <li><span class="c r">♦3</span> karşılığında elde yalnızca
+      <span class="c r">♦2</span> kaldı — daha düşük, dolayısıyla
+      <span class="c r">♦3</span> iade edildi ve hak yandı.</li>
+  </ul>
+
+  <div class="key">
+    <p>
+      Bu kural sayesinde <strong>tamamlanan her takas isteyen için
+      kazançtır</strong>. Kural yalnızca "renk yok" hâlini kapsasaydı, kısa
+      renkten isteyen oyuncu kendinden düşük bir kart alabilirdi —
+      <span class="c r">♦4</span> verip <span class="c r">♦2</span> almak gibi.
+    </p>
+  </div>
+
+  <p>
+    Aynı renkten birden fazla kart teklif edildiğinde <strong>yüksek teklif
+    önce</strong> eşleştirilir; karşılanması en zor olanı önce ele almak
+    toplam takas sayısını en yükseğe çıkarır.
+  </p>
+
+  <h3>Kim önce alır</h3>
+
+  <p>
+    Birden fazla artıda oyuncu varsa, <strong>yeni turdaki</strong> rolüne göre
+    öncelik: sekizci, sonra beşçi, sonra üççü.
+  </p>
+
+  <p>
+    İsteyen oyuncu karşı eli göremediği için renk seçimi bir bahistir. Ama
+    başarısız her takas da bilgi verir: rakibin o renkte kartı olmadığını ya
+    da elindekilerin düşük olduğunu kesin olarak öğrenirsin.
+  </p>
+</section>
+
+<section id="rotasyon">
+  <h2>Rollerin dönmesi</h2>
+
+  <p>Roller her tur, <strong>koşulsuz</strong> döner:</p>
+
+  <div class="key">
+    <p>sekizci → üççü → beşçi → sekizci</p>
+  </div>
+
+  <p>
+    Sekizcinin hedefini tutturup tutturmaması hiçbir şeyi değiştirmez.
+    Rotasyon üç turda tamamlanır, yani herkes her koltukta eşit sayıda oturur.
+  </p>
+</section>
+
+<section id="bitis">
+  <h2>Maç nasıl biter</h2>
+
+  <p>Maç başında iki moddan biri seçilir:</p>
+
+  <ul>
+    <li>
+      <strong>Hedef puan</strong> — biri belirlenen puana ulaşınca içinde
+      bulunulan tur tamamlanır, sonra maç biter; en yüksek puan kazanır.
+      75 puan yaklaşık 12 tur sürer.
+    </li>
+    <li>
+      <strong>Tur sayısı</strong> — sabit sayıda tur oynanır, sonunda en
+      yüksek puan kazanır. Herkesin her koltukta eşit oturması için tur sayısı
+      3'ün katı seçilir.
+    </li>
+  </ul>
+
+  <p>Maç sonunda en yüksek puanı birden fazla kişi paylaşıyorsa <strong>ortak
+  birincilik</strong> olur: ek tur oynanmaz, eşit olanların hepsi kazanır.</p>
+</section>
+
+<section id="af">
+  <h2>Af'lı oturum</h2>
+
+  <p>
+    Opsiyonel bir mod. Açıkken belirli aralıklarla kart transferi askıya
+    alınır: aralık 4 ise 4, 8, 12… numaralı turlarda hiç kart el değiştirmez.
+  </p>
+
+  <p>
+    <strong>Neden var:</strong> kart transferi doğası gereği kartopu etkisi
+    yaratıyor — kazanan bir sonraki turda daha da güçleniyor, geride kalan
+    daha da geriliyor. Af bunu periyodik olarak kesip toparlanma şansı veriyor.
+    Uzun maçlarda fark yaratıyor.
+  </p>
+</section>
+
+<footer>
+  <p>
+    Bu kurallar, oyunun iOS uygulamasının motoruna birebir uygulanmış ve
+    testlerle doğrulanmış hâlidir. Oyun İngilizce'de
+    <em>Sergeant Major</em> ya da <em>8-5-3</em> adıyla biliniyor.
+  </p>
+  <p>ÜçBeşSekiz · üç kişilik kart oyunu</p>
+</footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var button = document.querySelector(".theme");
+    var dark = matchMedia("(prefers-color-scheme: dark)");
+
+    // Yürürlükteki tema: elle seçim varsa o, yoksa sistemin tercihi.
+    // Damga olmadan doğrudan tersine çevirmek yanlış olurdu — karanlık
+    // sistemde ilk tıklama hiçbir şey değiştirmemiş gibi görünürdü.
+    function current() {
+      if (root.dataset.theme) return root.dataset.theme;
+      return dark.matches ? "dark" : "light";
+    }
+
+    function apply(theme) {
+      root.dataset.theme = theme;
+      button.setAttribute(
+        "aria-label",
+        theme === "dark" ? "Aydınlık temaya geç" : "Karanlık temaya geç"
+      );
+    }
+
+    apply(current());
+
+    button.addEventListener("click", function () {
+      var next = current() === "dark" ? "light" : "dark";
+      apply(next);
+      try {
+        localStorage.setItem("ucbessekiz-tema", next);
+      } catch (e) {
+        // Kaydedilemezse tercih yalnızca bu sayfa için geçerli olur.
+      }
+    });
+  })();
+</script>
